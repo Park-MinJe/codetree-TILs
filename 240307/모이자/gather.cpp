@@ -1,5 +1,5 @@
 #include <iostream>
-#define MAX 10001;
+#define INF 1000000000;
 
 using namespace std;
 
@@ -20,7 +20,7 @@ void calcminCost(){
 }
 
 int main() {
-    minCost = MAX;
+    minCost = INF;
     scanf("%d", &n);
     a = new int[n+1];
 
