@@ -29,15 +29,16 @@ int main() {
             break;
         }
         if(curX == 0 && curY == 0){
-            ++i;
             break;
         }
     }
 
     if(i == cmds.size()){
-        i = -1;
+        printf("%d", -1);
     }
-    printf("%d", i);
+    else{
+        printf("%d", i+1);
+    }
     
     return 0;
 }
