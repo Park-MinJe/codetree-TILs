@@ -29,17 +29,17 @@ int main() {
     }
     else if(k>=4 &&k<=6){
         curX = n;
-        curY = k-3;
+        curY = k-n;
         dir = 3;
     }
     else if(k>=7 && k<=9){
         curY = n;
-        curX = 10-k;
+        curX = (3*n+1)-k;
         dir = 0;
     }
     else if(k>=10 && k<=12){
         curX = 1;
-        curY = 13-k;
+        curY = (4*n+1)-k;
         dir = 1;
     }
 
