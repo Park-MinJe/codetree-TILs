@@ -26,7 +26,7 @@ void setDirIdx(){
 bool isBoarder(){
     switch(d){
     case 'U':
-        if(r == n){
+        if(r == 1){
             return true;
         }
         return false;
@@ -38,7 +38,7 @@ bool isBoarder(){
         return false;
         break;
     case 'D':
-        if(r == 1){
+        if(r == n){
             return true;
         }
         return false;
@@ -55,13 +55,13 @@ bool isBoarder(){
 void calcDyDx(){
     switch(d){
     case 'U':
-        ++r;
+        --r;
         break;
     case 'R':
         ++c;
         break;
     case 'D':
-        --r;
+        ++r;
         break;
     case 'L':
         --c;
