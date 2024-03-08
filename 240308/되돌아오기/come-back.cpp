@@ -12,10 +12,9 @@ int main() {
     int sum = 0;
     for(int i = 0; i<n; ++i){
         scanf(" %c %d", &dir[i], &cost[i]);
-        // printf("%c %d\n", dir[i], cost[i]);
     }
     int iter = 0;
-    for(int iter = 0; iter<n; ++iter){
+    for(iter = 0; iter<n; ++iter){
         switch(dir[iter]){
         case 'W':
             if(dx > 0 && dx <= cost[iter] && dy == 0){
@@ -59,12 +58,17 @@ int main() {
             break;
         }
         // printf("%d %d\n", iter, sum);
+        // printf("%c %d\n", dir[iter], cost[iter]);
         // printf("%d %d\n\n", dx, dy);
         if(dx == 0 && dy == 0) break;
     }
 
-    if(iter >= n) printf("%d", -1);
-    else printf("%d", sum);
+    if(iter >= n) {
+        printf("%d", -1);
+    }
+    else {
+        printf("%d", sum);
+    }
 
     return 0;
 }
