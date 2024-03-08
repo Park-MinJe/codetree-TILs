@@ -34,6 +34,9 @@ int main() {
         }
     }
 
+    if(i == cmds.size()){
+        i = -1;
+    }
     printf("%d", i);
     
     return 0;
