@@ -22,22 +22,22 @@ int main() {
     }
     // 쏘는 위치 K
     scanf("%d", &k);
-    if(k >= 1 && k <= 3){
+    if(k >= 1 && k <= n){
         curY = 1;
         curX = k;
         dir = 2;
     }
-    else if(k>=4 &&k<=6){
+    else if(k>=(n+1) &&k<=(n*2)){
         curX = n;
         curY = k-n;
         dir = 3;
     }
-    else if(k>=7 && k<=9){
+    else if(k>=(n*2+1) && k<=(n*3)){
         curY = n;
         curX = (3*n+1)-k;
         dir = 0;
     }
-    else if(k>=10 && k<=12){
+    else if(k>=(n*3+1) && k<=(n*4)){
         curX = 1;
         curY = (4*n+1)-k;
         dir = 1;
