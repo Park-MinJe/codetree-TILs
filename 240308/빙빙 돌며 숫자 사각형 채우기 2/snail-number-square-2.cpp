@@ -21,7 +21,13 @@ int main() {
     curC = 0;
     int num = 1, iter = 0;
     board[curR][curC] = num;
-    ++curR;
+    if(n!=1){
+        ++curR;
+    }
+    else{
+        dir = (dir+3)%4;
+        ++curC;
+    }
     ++num;
     while(n > 0 && m > 0){
         switch(dir){
