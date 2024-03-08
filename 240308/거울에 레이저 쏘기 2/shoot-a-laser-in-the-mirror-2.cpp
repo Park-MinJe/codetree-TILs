@@ -46,7 +46,7 @@ int main() {
     int cnt = 0;
     while(curX >= 1 && curX <= n && curY >= 1 && curY <= n){
         switch(dir){
-        case 0:
+        case 0: 
             if(map[curY][curX] == '/'){
                 ++curX;
                 dir = (dir+1)%4;
