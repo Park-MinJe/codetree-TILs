@@ -63,7 +63,7 @@ int main() {
         if(dx == 0 && dy == 0) break;
     }
 
-    if(iter == n) printf("%d", -1);
+    if(iter >= n) printf("%d", -1);
     else printf("%d", sum);
 
     return 0;
