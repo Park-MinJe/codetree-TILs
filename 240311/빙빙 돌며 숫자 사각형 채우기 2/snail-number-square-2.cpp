@@ -15,6 +15,9 @@ int main() {
     board = new int*[n];
     for(int i = 0; i<n; ++i){
         board[i] = new int[n];
+        for(int j = 0; j<n; ++j){
+            board[i][j] = -1;
+        }
     }
 
     curR = 0;
@@ -33,6 +36,7 @@ int main() {
         switch(dir){
         case 0: // N
             for(int i = 1; i<n; ++i){
+                printf("%d %d\n", curR, curC);
                 board[curR][curC] = num;
                 ++num;
                 if(i != n-1) --curR;
@@ -43,6 +47,7 @@ int main() {
             break;
         case 1: // E
             for(int i = 1; i<m; ++i){
+                printf("%d %d\n", curR, curC);
                 board[curR][curC] = num;
                 ++num;
                 if(i != m-1) ++curC;
@@ -53,6 +58,7 @@ int main() {
             break;
         case 2: // S
             for(int i = 1; i<n; ++i){
+                printf("%d %d\n", curR, curC);
                 board[curR][curC] = num;
                 ++num;
                 if(i != n-1) ++curR;
@@ -63,6 +69,7 @@ int main() {
             break;
         case 3: // W
             for(int i = 1; i<m; ++i){
+                printf("%d %d\n", curR, curC);
                 board[curR][curC] = num;
                 ++num;
                 if(i != m-1) --curC;
