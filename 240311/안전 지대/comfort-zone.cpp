@@ -22,7 +22,7 @@ bool inRange(int r, int c){
 void search(){
     int resultCnt = -1,
         resultK;
-    for(int k = minK; k <= maxK; ++k){
+    for(int k = 1; k <= maxK; ++k){
         int cnt = 0;
         bool** isVisited;
         isVisited = new bool*[n];
@@ -64,6 +64,7 @@ void search(){
                 }
             }
         }
+        //debug
         //printf("%d %d\n", k, cnt);
         if(resultCnt < cnt){
             resultCnt = cnt;
@@ -95,6 +96,8 @@ int main() {
             }
         }
     }
+    // debug
+    //printf("%d %d\n", minK, maxK);
 
     search();
 
