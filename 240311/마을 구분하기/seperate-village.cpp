@@ -29,8 +29,9 @@ void search(){
 
             queue<Coord> q;
             q.push(Coord(i, j));
+            isVisitied[i][j] = true;
 
-            int cnt = 0;
+            int cnt = 1;
             while(!q.empty()){
                 Coord cur = q.front();
                 q.pop();
