@@ -7,6 +7,13 @@ int n, m,
     dir = 2;    // 0-N, 1-E, 2-S, 3-W
 int** board;
 
+int mvR[4] = {-1, 0, 1, 0}, mvC[4] = {0, 1, 0, -1},
+    mvRLast[4] = {0, -1, 0, 1}, mvCLast[4] = {-1, 0, 1, 0};
+
+bool inRange(int nr, int nc){
+    return nr >= 0 && nr < n && nc >= 0 && nc < m;
+}
+
 int main() {
     scanf("%d %d", &n, &m);
     int rSize = n,
@@ -22,64 +29,23 @@ int main() {
 
     curR = 0;
     curC = 0;
-    int num = 1, iter = 0;
-    board[curR][curC] = num;
-    if(n!=1){
-        ++curR;
-    }
-    else{
-        dir = (dir+3)%4;
-        ++curC;
-    }
-    ++num;
-    while(n > 0 && m > 0){
-        switch(dir){
-        case 0: // N
-            for(int i = 1; i<n; ++i){
-                // printf("%d %d\n", curR, curC);
-                board[curR][curC] = num;
-                ++num;
-                if(i != n-1) --curR;
+    board[curR][curC] = 1;
+    for(int i = 2; i <= n*m; ++i){
+        while(true){
+            int nr = curR + mvR[dir];
+            int nc = curC + mvC[dir];
+            //printf("%d %d\n", nr, nc);
+
+            if(inRange(nr, nc) && board[nr][nc] == -1){
+                curR = nr;
+                curC = nc;
+                board[curR][curC] = i;
+                break;
             }
-            --curC;
-            dir = (dir+3)%4;
-            --n;
-            break;
-        case 1: // E
-            for(int i = 1; i<m; ++i){
-                // printf("%d %d\n", curR, curC);
-                board[curR][curC] = num;
-                ++num;
-                if(i != m-1) ++curC;
+            else{
+                dir = (dir+3)%4;
             }
-            --curR;
-            dir = (dir+3)%4;
-            --m;
-            break;
-        case 2: // S
-            for(int i = 1; i<n; ++i){
-                // printf("%d %d\n", curR, curC);
-                board[curR][curC] = num;
-                ++num;
-                if(i != n-1) ++curR;
-            }
-            ++curC;
-            dir = (dir+3)%4;
-            if(iter != 0) --n;
-            break;
-        case 3: // W
-            for(int i = 1; i<m; ++i){
-                // printf("%d %d\n", curR, curC);
-                board[curR][curC] = num;
-                ++num;
-                if(i != m-1) --curC;
-            }
-            ++curR;
-            dir = (dir+3)%4;
-            --m;
-            break;
         }
-        ++iter;
     }
 
     for(int i = 0; i < rSize; ++i){
@@ -88,6 +54,8 @@ int main() {
         }
         printf("\n");
     }
+
+    delete[] board;
 
     return 0;
 }
