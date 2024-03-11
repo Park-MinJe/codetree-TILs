@@ -22,7 +22,7 @@ int main() {
     board = new int*[n];
     for(int i = 0; i<n; ++i){
         board[i] = new int[n];
-        for(int j = 0; j<n; ++j){
+        for(int j = 0; j<m; ++j){
             board[i][j] = -1;
         }
     }
