@@ -5,6 +5,7 @@ using namespace std;
 
 int n, m;
 int** map;
+bool** isVisited;
 
 class Coord{
 private:
@@ -29,6 +30,7 @@ bool isDest(int r, int c){
 bool dfs(){
     queue<Coord> q;
     q.push(Coord(0, 0));
+    isVisited[0][0] = true;
 
     while(!q.empty()){
         Coord now = q.front();
@@ -40,11 +42,13 @@ bool dfs(){
         if(isDest(nrDown, ncDown) || isDest(nrRight, ncRight)){
             return true;
         }
-        if(inRange(nrDown, ncDown) && map[nrDown][ncDown] == 1){
+        if(inRange(nrDown, ncDown) && map[nrDown][ncDown] == 1 && !isVisited[nrDown][ncDown]){
             q.push(Coord(nrDown, ncDown));
+            isVisited[nrDown][ncDown] = true;
         }
-        if(inRange(nrRight, ncRight) && map[nrRight][ncRight] == 1){
+        if(inRange(nrRight, ncRight) && map[nrRight][ncRight] == 1 && !isVisited[nrRight][ncRight]){
             q.push(Coord(nrRight, ncRight));
+            isVisited[nrRight][ncRight] = true;
         }
     }
     return false;
@@ -53,8 +57,13 @@ bool dfs(){
 int main() {
     scanf("%d %d", &n, &m);
     map = new int*[n];
+    isVisited = new bool*[n];
     for(int i = 0; i < n; ++i){
         map[i] = new int[m];
+        isVisited[i] = new bool[m];
+        for(int j = 0; j<m; ++j){
+            isVisited[i][j] = false;
+        }
     }
     for(int i = 0; i < n; ++i){
         for(int j = 0; j < m; ++j){
