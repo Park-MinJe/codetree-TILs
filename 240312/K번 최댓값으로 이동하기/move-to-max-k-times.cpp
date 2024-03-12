@@ -24,13 +24,15 @@ bool isAccessible(int sr, int sc, int nr, int nc, bool** isVisited){
 }
 
 void search(){
-    int curStartR = startR,
-        curStartC = startC,
-        nextStartR = n,
-        nextStartC = n,
+    int curStartR,
+        curStartC,
+        nextStartR = startR,
+        nextStartC = startC,
         maxN = 0;
     for(int i = 0; i < k; ++i){
         maxN = 0;
+        curStartR = nextStartR;
+        curStartC = nextStartC;
 
         bool** isVisited = new bool*[n+1];
         for(int j = 1; j <= n; ++j){
@@ -83,8 +85,6 @@ void search(){
         //debug
         // printf("%d: startR-%d startC-%d\n", i, curStartR, curStartC);
         // printf("%d: nextR-%d nextC-%d\n", i, nextStartR, nextStartC);
-        curStartR = nextStartR;
-        curStartC = nextStartC;
     }
     printf("%d %d", nextStartR, nextStartC);
 }
