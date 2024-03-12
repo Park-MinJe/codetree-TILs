@@ -72,22 +72,6 @@ void bfs(queue<Coord>& q, vector<Coord>& toMelt){
         }
     }
 }
-bool melt(queue<Coord>& q, vector<Coord>& toMelt){
-    if(toMelt.empty()){
-        return false;
-    }
-    else{
-        lastSize = toMelt.size();
-        ++t;
-        
-        vector<Coord>::iterator it;
-        for(it = toMelt.begin(); it != toMelt.end(); ++it){
-            map[(*it).r][(*it).c] = 0;
-            q.push(*it);
-        }
-        return true;
-    }
-}
 void simulate(){
     queue<Coord> q;
     setFirstQueue(q);
@@ -95,8 +79,18 @@ void simulate(){
     while(true){
         vector<Coord> toMelt;
         bfs(q, toMelt);
-        if(!melt(q, toMelt)){
+        if(toMelt.empty()){
             break;
+        }
+        else{
+            lastSize = toMelt.size();
+            ++t;
+            
+            vector<Coord>::iterator it;
+            for(it = toMelt.begin(); it != toMelt.end(); ++it){
+                map[(*it).r][(*it).c] = 0;
+                q.push(*it);
+            }
         }
     }
 }
