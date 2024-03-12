@@ -35,9 +35,7 @@ void getInput(){
 bool inRange(int r, int c){
     return 0<=r&&r<n && 0<=c&&c<m;
 }
-
-void search(){
-    queue<Coord> q;
+void setFirstQueue(queue<Coord>& q){
     for(int i = 0; i < n; ++i){
         q.push(Coord(i, 0));
         q.push(Coord(i, m-1));
@@ -52,28 +50,35 @@ void search(){
         isVisited[0][i] = 1;
         isVisited[n-1][i] = 1;
     }
+}
+void bfs(queue<Coord>& q, vector<Coord>& toMelt){
+    while(!q.empty()){
+        Coord cur = q.front();
+        q.pop();
 
-    while(true){
-        vector<Coord> toMelt;
-        while(!q.empty()){
-            Coord cur = q.front();
-            q.pop();
-
-            for(int i = 0; i < 4; ++i){
-                int nr = cur.r + dr[i],
-                    nc = cur.c + dc[i];
-                if(inRange(nr, nc)){
-                    if(isVisited[nr][nc] != 1 && map[nr][nc] == 0){
-                        q.push(Coord(nr, nc));
-                        isVisited[nr][nc] = true;
-                    }
-                    else if(isVisited[nr][nc] == -1 && map[nr][nc] == 1){
-                        toMelt.push_back(Coord(nr, nc));
-                        isVisited[nr][nc] = 0;
-                    }
+        for(int i = 0; i < 4; ++i){
+            int nr = cur.r + dr[i],
+                nc = cur.c + dc[i];
+            if(inRange(nr, nc)){
+                if(isVisited[nr][nc] != 1 && map[nr][nc] == 0){
+                    q.push(Coord(nr, nc));
+                    isVisited[nr][nc] = true;
+                }
+                else if(isVisited[nr][nc] == -1 && map[nr][nc] == 1){
+                    toMelt.push_back(Coord(nr, nc));
+                    isVisited[nr][nc] = 0;
                 }
             }
         }
+    }
+}
+void search(){
+    queue<Coord> q;
+    setFirstQueue(q);
+
+    while(true){
+        vector<Coord> toMelt;
+        bfs(q, toMelt);
         if(toMelt.empty()){
             break;
         }
