@@ -72,7 +72,7 @@ bool isAccessible(int**& isVisited, int r, int c){
     return inRange(r, c) && !isVisited[r][c] && board[r][c] == 0;
 }
 void bfs(){
-    int cnt = 1;
+    int cnt = 0;
     int** isVisited = new int*[n+1];
     for(int i = 1; i <= n; ++i){
         isVisited[i] = new int[n+1];
@@ -83,9 +83,13 @@ void bfs(){
 
     vector<Coord>::iterator it;
     for(it = startPoints.begin(); it != startPoints.end(); ++it){
+        // printf(">>start point: (%d, %d)\n", (*it).r, (*it).c);
         queue<Coord> q;
-        q.push(Coord((*it).r, (*it).c));
-        isVisited[(*it).r][(*it).c] = true;
+        if(isAccessible(isVisited, (*it).r, (*it).c)){
+            q.push(Coord((*it).r, (*it).c));
+            isVisited[(*it).r][(*it).c] = true;
+            ++cnt;
+        }
 
         while(!q.empty()){
             Coord cur = q.front();
@@ -101,6 +105,7 @@ void bfs(){
                 }
             }
         }
+        // printf("cnt = %d\n", cnt);
     }
     if(result < cnt){
         result = cnt;
@@ -109,6 +114,7 @@ void bfs(){
 void search(){
     while(!setOfStonePointIdx.empty()){
         vector<int> stoneIdxSet = setOfStonePointIdx.front();
+        // printf(">>Start search for %ld set", stoneIdxSet.size());
         setOfStonePointIdx.pop();
         // 옮긴 돌 좌표 0으로 표기
         //debug
@@ -121,12 +127,12 @@ void search(){
         }
         //debug
         // printf("\n대상 격자\n");
-        // for(int i = 1; i <= n; ++i){
-        //     for(int j = 1; j <= n; ++j){
-        //         printf("%d ", board[i][j]);
-        //     }
-        //     printf("\n");
-        // }
+        for(int i = 1; i <= n; ++i){
+            for(int j = 1; j <= n; ++j){
+                // printf("%d ", board[i][j]);
+            }
+            // printf("\n");
+        }
 
         bfs();
 
