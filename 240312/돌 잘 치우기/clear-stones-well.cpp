@@ -81,35 +81,35 @@ void bfs(){
         }
     }
 
-    queue<Coord> q;
     vector<Coord>::iterator it;
     for(it = startPoints.begin(); it != startPoints.end(); ++it){
         // printf(">>start point: (%d, %d)\n", (*it).r, (*it).c);
-        q.push(Coord((*it).r, (*it).c));
-        isVisited[(*it).r][(*it).c] = true;
-        ++cnt;
-    }
+        queue<Coord> q;
+        if(isAccessible(isVisited, (*it).r, (*it).c)){
+            q.push(Coord((*it).r, (*it).c));
+            isVisited[(*it).r][(*it).c] = true;
+            ++cnt;
+        }
 
-    while(!q.empty()){
-        Coord cur = q.front();
-        q.pop();
+        while(!q.empty()){
+            Coord cur = q.front();
+            q.pop();
 
-        for(int i = 0; i < 4; ++i){
-            int nr = cur.r + dr[i],
-                nc = cur.c + dc[i];
-            if(isAccessible(isVisited, nr, nc)){
-                q.push(Coord(nr, nc));
-                isVisited[nr][nc] = true;
-                ++cnt;
+            for(int i = 0; i < 4; ++i){
+                int nr = cur.r + dr[i],
+                    nc = cur.c + dc[i];
+                if(isAccessible(isVisited, nr, nc)){
+                    q.push(Coord(nr, nc));
+                    isVisited[nr][nc] = true;
+                    ++cnt;
+                }
             }
         }
+        // printf("cnt = %d\n", cnt);
     }
-    // printf("cnt = %d\n", cnt);
-    result = cnt;
-    
-    // if(result < cnt){
-    //     result = cnt;
-    // }
+    if(result < cnt){
+        result = cnt;
+    }
 }
 void search(){
     while(!setOfStonePointIdx.empty()){
@@ -129,9 +129,9 @@ void search(){
         // printf("\n대상 격자\n");
         // for(int i = 1; i <= n; ++i){
         //     for(int j = 1; j <= n; ++j){
-        //         // printf("%d ", board[i][j]);
+        //         printf("%d ", board[i][j]);
         //     }
-        //     // printf("\n");
+        //     printf("\n");
         // }
 
         bfs();
