@@ -14,11 +14,7 @@ public:
     Coord(int ir, int ic): r(ir), c(ic){}
 };
 
-bool isMovable(char currentColor, int nr, int nc){
-    return board[nr][nc] != currentColor;
-}
-
-int main() {
+void init(){
     scanf("%d %d", &r, &c);
     board = new char*[r];
     for(int i = 0;i < r; ++i){
@@ -27,7 +23,12 @@ int main() {
             scanf(" %c", &board[i][j]);
         }
     }
+}
 
+bool isMovable(char currentColor, int nr, int nc){
+    return board[nr][nc] != currentColor;
+}
+void bfs(){
     int cnt = 0;
     queue<Coord> q;
     q.push(Coord(0, 0));
@@ -61,5 +62,10 @@ int main() {
     }
 
     printf("%d", cnt);
+}
+
+int main() {
+    init();
+    bfs();
     return 0;
 }
