@@ -19,6 +19,9 @@ void solve(){
             a[i] = '1';
             isFound = true;
         }
+        if(!isFound && i == len-1){
+            a[i] = '0';
+        }
         if(a[i] == '1'){
             max += square[len-1-i];
         }
