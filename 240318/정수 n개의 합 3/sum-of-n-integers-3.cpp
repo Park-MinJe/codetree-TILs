@@ -13,30 +13,48 @@ int n, k,
 
 void init(){
     scanf("%d %d", &n, &k);
-    for(int i = 0; i < n; ++i){
-        for(int j = 0; j < n; ++j){
-            scanf(" %d", &map[i][j]);
-            if(j == 0){
+    for(int r = 0; r < n; ++r){
+        for(int c = 0; c < n; ++c){
+            scanf(" %d", &map[r][c]);
+        }
+    }
+    
+    for(int r = 0; r < n; ++r){
+        for(int c = 0; c < n-k+1; ++c){
+            if(c == 0){
                 for(int l = 0; l < k; ++l){
-                    partialSumByRow[i][j] += map[i][l];
+                    partialSumByRow[r][c] += map[r][l];
                 }
             }
-            else if(j < n-k){
-                partialSumByRow[i][j] = partialSumByRow[i][j-1] - map[i][j-1] + map[i][j+k-1];
+            else{
+                partialSumByRow[r][c] = partialSumByRow[r][c-1] - map[r][c-1] + map[r][c+k-1];
             }
+            //debug
+            //printf("%d ", partialSumByRow[r][c]);
         }
+        //debug
+        //printf("\n");
     }
 
     maxSum = 0;
-    for(int i = 0; i < n-k; ++i){
-        for(int j = 0; j < n-k; ++j){
-            for(int l = 0; l < k; ++l){
-                partialSum[i][j] += partialSumByRow[i+l][j];
+    for(int c = 0; c < n-k+1; ++c){
+        for(int r = 0; r < n-k+1; ++r){
+            if(r == 0){
+                for(int l = 0; l < k; ++l){
+                    partialSum[r][c] += partialSumByRow[l][c];
+                }
             }
-            if(maxSum < partialSum[i][j]){
-                maxSum = partialSum[i][j];
+            else{
+                partialSum[r][c] = partialSum[r-1][c] - partialSumByRow[r-1][c] + partialSumByRow[r+k-1][c];
+            }
+            //debug
+            //printf("%d ", partialSum[r][c]);
+            if(maxSum < partialSum[r][c]){
+                maxSum = partialSum[r][c];
             }
         }
+        //debug
+        //printf("\n");
     }
 }
 
