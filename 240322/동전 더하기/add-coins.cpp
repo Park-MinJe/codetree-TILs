@@ -15,13 +15,14 @@ int main() {
     }
 
     for(int i = n-1; i >= 0; --i){
+        int tmpCnt = k/coins[i];
+        cnt += tmpCnt;
+        k -= tmpCnt*coins[i];
+        
         if(k == 0){
             printf("%d", cnt);
             break;
         }
-        int tmpCnt = k/coins[i];
-        cnt += tmpCnt;
-        k -= tmpCnt*coins[i];
     }
     
     return 0;
