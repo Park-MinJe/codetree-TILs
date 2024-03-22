@@ -25,7 +25,7 @@ int main() {
     }
     minCost = preCost;
 
-    for(int i = 1; i < n-t; ++i){
+    for(int i = 1; i <= n-t; ++i){
         
         preCost = preCost - lstCost[i-1] + lstCost[i+t-1];
         if(minCost > preCost){
