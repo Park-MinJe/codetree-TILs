@@ -9,13 +9,21 @@ vector<int> arr;
 
 void init(){
     scanf("%d", &n);
-    arr.reserve(n);
+    //arr.reserve(n);
     for(int i = 0; i < n; ++i){
-        scanf(" %d", &arr[i]);
+        int tmp;
+        scanf(" %d", &tmp);
+        //scanf(" %d", &arr[i]);
+
+        arr.push_back(tmp);
     }
     scanf(" %d", &k);
 
     sort(arr.begin(), arr.end());
+    // for(int i = 0; i < n; ++i){
+    //     cout<<arr[i]<<" ";
+    // }
+    // cout<<"\n";
 }
 
 int calcDiv(){
