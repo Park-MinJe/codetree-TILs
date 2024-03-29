@@ -20,7 +20,7 @@ int main() {
     }
     for(int i = 0; i < m; ++i){
         cin>>tmp;
-        if("1"<=tmp && tmp<=to_string(n)){
+        if('0'<=tmp[0] && tmp[0]<='9'){
             result.push(mapByInt[tmp]);
         }
         else{
