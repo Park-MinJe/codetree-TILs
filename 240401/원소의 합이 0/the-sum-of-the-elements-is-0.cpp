@@ -27,9 +27,14 @@ int main() {
                 tmpSumCD = tmpArr[2][i] + tmpArr[3][j],
                 tmpCntAB = cnt[0][tmpArr[0][i]] * cnt[1][tmpArr[1][j]],
                 tmpCntCD = cnt[2][tmpArr[2][i]] * cnt[3][tmpArr[3][j]];
-            for(int k = 0; k < 4; ++k){
-                --cnt[k][tmpArr[k][i]];
-            }
+            //debug
+            // cout<<tmpArr[0][i]<<" + "<<tmpArr[1][j]<<" = "<<tmpSumAB<<"::"<<tmpCntAB<<"\n";
+            // cout<<tmpArr[2][i]<<" + "<<tmpArr[3][j]<<" = "<<tmpSumAB<<"::"<<tmpCntCD<<"\n\n";
+
+            // for(int k = 0; k < 2; ++k){
+            //     --cnt[k*2][tmpArr[k*2][i]];
+            //     --cnt[k*2+1][tmpArr[k*2+1][j]];
+            // }
             twoSumCnt[0][tmpSumAB] += tmpCntAB;
             twoSumCnt[1][tmpSumCD] += tmpCntCD;
         }
@@ -40,10 +45,8 @@ int main() {
     for(itAB = twoSumCnt[0].begin(); itAB != twoSumCnt[0].end(); ++itAB){
         for(itCD = twoSumCnt[1].begin(); itCD != twoSumCnt[1].end(); ++itCD){
             if(itAB->first + itCD->first == 0){
-                ++cntZeroSum;
+                cntZeroSum += itAB->second * itCD->second;
             }
-            --(itAB->second);
-            --(itCD->second);
         }
     }
     cout<<cntZeroSum;
