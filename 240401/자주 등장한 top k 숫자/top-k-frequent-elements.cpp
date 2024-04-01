@@ -11,7 +11,7 @@ long long arr[MAX_N];
 unordered_map<long long, int> freq;
 
 bool compare(pair<long long, int>& p1, pair<long long, int>& p2){
-    return p1.second > p2.second;
+    return p1.second > p2.second || (p1.second == p2.second && p1.first > p2.first);
 }
 
 int main() {
