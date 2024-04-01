@@ -3,7 +3,8 @@
 
 using namespace std;
 
-int n, sum = 0;
+int n;
+long long sum = 0;
 unordered_map<long long, long long> map;
 
 int main() {
@@ -12,8 +13,8 @@ int main() {
     for(int i = 0; i < n; ++i){
         cin>>x>>y;
         if(map.find(x) == map.end()){   // 없음
-            map[x] = y;
             sum += y;
+            map[x] = y;
         }
         else{
             if(map[x] > y){
