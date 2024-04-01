@@ -28,9 +28,6 @@ int main() {
             for(itB = cnt[i*2+1].begin(); itB != cnt[i*2+1].end(); ++itB){
                 int tmpSumAB = itA->first + itB->first,
                     tmpCntAB = itA->second * itB->second;
-                //debug
-                // cout<<tmpArr[0][i]<<" + "<<tmpArr[1][j]<<" = "<<tmpSumAB<<"::"<<tmpCntAB<<"\n";
-                // cout<<tmpArr[2][i]<<" + "<<tmpArr[3][j]<<" = "<<tmpSumAB<<"::"<<tmpCntCD<<"\n\n";
 
                 twoSumCnt[i][tmpSumAB] += tmpCntAB;
             }
@@ -40,11 +37,15 @@ int main() {
     unordered_map<int, int>::iterator itAB;
     unordered_map<int, int>::iterator itCD;
     for(itAB = twoSumCnt[0].begin(); itAB != twoSumCnt[0].end(); ++itAB){
-        for(itCD = twoSumCnt[1].begin(); itCD != twoSumCnt[1].end(); ++itCD){
-            if(itAB->first + itCD->first == 0){
-                cntZeroSum += itAB->second * itCD->second;
-            }
+        int diff = -(itAB->first);
+        if(twoSumCnt[1].find(diff) != twoSumCnt[1].end()){
+            cntZeroSum += twoSumCnt[1][diff] * (itAB->second);
         }
+        // for(itCD = twoSumCnt[1].begin(); itCD != twoSumCnt[1].end(); ++itCD){
+        //     if(itAB->first + itCD->first == 0){
+        //         cntZeroSum += itAB->second * itCD->second;
+        //     }
+        // }
     }
     cout<<cntZeroSum;
 
