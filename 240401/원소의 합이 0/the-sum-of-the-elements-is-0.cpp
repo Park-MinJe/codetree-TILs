@@ -21,22 +21,19 @@ int main() {
         }
     }
     
-    for(int i = 0; i < n; ++i){
-        for(int j = 0; j < n; ++j){
-            int tmpSumAB = tmpArr[0][i] + tmpArr[1][j],
-                tmpSumCD = tmpArr[2][i] + tmpArr[3][j],
-                tmpCntAB = cnt[0][tmpArr[0][i]] * cnt[1][tmpArr[1][j]],
-                tmpCntCD = cnt[2][tmpArr[2][i]] * cnt[3][tmpArr[3][j]];
-            //debug
-            // cout<<tmpArr[0][i]<<" + "<<tmpArr[1][j]<<" = "<<tmpSumAB<<"::"<<tmpCntAB<<"\n";
-            // cout<<tmpArr[2][i]<<" + "<<tmpArr[3][j]<<" = "<<tmpSumAB<<"::"<<tmpCntCD<<"\n\n";
+    for(int i = 0; i < 2; ++i){
+        unordered_map<int, int>::iterator itA;
+        unordered_map<int, int>::iterator itB;
+        for(itA = cnt[i*2].begin(); itA != cnt[i*2].end(); ++itA){
+            for(itB = cnt[i*2+1].begin(); itB != cnt[i*2+1].end(); ++itB){
+                int tmpSumAB = itA->first + itB->first,
+                    tmpCntAB = itA->second * itB->second;
+                //debug
+                // cout<<tmpArr[0][i]<<" + "<<tmpArr[1][j]<<" = "<<tmpSumAB<<"::"<<tmpCntAB<<"\n";
+                // cout<<tmpArr[2][i]<<" + "<<tmpArr[3][j]<<" = "<<tmpSumAB<<"::"<<tmpCntCD<<"\n\n";
 
-            // for(int k = 0; k < 2; ++k){
-            //     --cnt[k*2][tmpArr[k*2][i]];
-            //     --cnt[k*2+1][tmpArr[k*2+1][j]];
-            // }
-            twoSumCnt[0][tmpSumAB] += tmpCntAB;
-            twoSumCnt[1][tmpSumCD] += tmpCntCD;
+                twoSumCnt[i][tmpSumAB] += tmpCntAB;
+            }
         }
     }
 
