@@ -4,20 +4,21 @@
 
 using namespace std;
 
-int n, k, cnt;
-unordered_map<int, vector<int>> map;
-unordered_map<int, bool> mapIsUsed;
+int n, k;
+long long cnt;
+unordered_map<long long, vector<int>> map;
+unordered_map<long long, bool> mapIsUsed;
 
 int main() {
     cin>>n>>k;
     for(int i = 0; i < n; ++i){
-        int tmp;
+        long long tmp;
         cin>>tmp;
         map[tmp].push_back(i);
         mapIsUsed[tmp] = false;
     }
     
-    unordered_map<int, vector<int>>::iterator it;
+    unordered_map<long long, vector<int>>::iterator it;
     for(it = map.begin(); it != map.end(); ++it){
         if(!mapIsUsed[it->first]){
             mapIsUsed[it->first] = true;
