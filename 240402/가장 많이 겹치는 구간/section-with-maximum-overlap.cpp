@@ -24,12 +24,15 @@ int main() {
     sort(points.begin(), points.end());
 
     int tmpOverlapCnt;
-    for(int i = minX; i <= maxX; ++i){
+    for(int i = 0; i <= 2*n; ++i){
+        int curX, curV;
+        tie(curX, curV) = points[i];
+
         tmpOverlapCnt = 0;
         for(int j = 0; j < 2*n; ++j){
             int x, v;
             tie(x, v) = points[j];
-            if(x > i)
+            if(x > curX)
                 break;
             
             tmpOverlapCnt += v;
