@@ -20,7 +20,7 @@ class Segment{
 public:
     int leftX, rightX;
     Segment(){}
-}
+};
 
 int n,
     preX, curX,
