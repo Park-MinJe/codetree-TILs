@@ -6,6 +6,7 @@
 #include <set>
 
 #define INF_LL 9000000000000000000
+#define MAX_N 50001
 
 using namespace std;
 
@@ -15,10 +16,11 @@ long long x, y, x1, x2,
 vector<tuple<long long, long long, int, int>> points;
             // <x, y, v, idx>
 unordered_set<int> segs;
-set<long long> ys;  // 겹치는 선분들의 y 좌표 (오름차순)
+set<pair<long long, int>> ys;  // 겹치는 선분들의 y 좌표 (오름차순)
+bool isVisited[MAX_N];
 
 void init(){
-    cin>>n;
+    cin>>n; 
     for(int i = 0; i < n; ++i){
         cin>>y>>x1>>x2;
         points.push_back(
@@ -27,31 +29,31 @@ void init(){
         points.push_back(
             make_tuple(x2, y, -1, i)
         );
+
+        isVisited[i] = false;
     }
     sort(points.begin(), points.end());
 }
 
+// 틀린 이유: 이미 보였던 색이 다시 보이는 경우 누락
 void solve(){
     for(int i = 0; i < n*2; ++i){
         int v, idx;
         tie(x, y, v, idx) = points[i];
 
         if(v == 1){
-            // if(segs.empty()){
-            //     ++ans;
-            // }
-
-            ys.insert(y);
-            if(curY > (*ys.begin())){
+            ys.insert(make_pair(y, idx));
+            if(curY > ys.begin()->first){
                 // 현재 최소 y값이 변경될 때
-                curY = (*ys.begin());
+                curY = ys.begin()->first;
                 ++ans;
+                isVisited[idx] = true;
             }
 
             segs.insert(idx);
         }
         else{
-            ys.erase(y);
+            ys.erase(make_pair(y, idx));
             segs.erase(idx);
 
             if(segs.empty()){
@@ -59,8 +61,12 @@ void solve(){
             }
             else{
                 if(curY == y){
-                    curY = (*ys.begin());
-                    ++ans;
+                    curY = ys.begin()->first;
+
+                    if(!isVisited[ys.begin()->second]){
+                        ++ans;
+                        isVisited[ys.begin()->second] = true;
+                    }
                 }
             }
         }
