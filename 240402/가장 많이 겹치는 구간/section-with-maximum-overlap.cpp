@@ -23,22 +23,15 @@ int main() {
     }
     sort(points.begin(), points.end());
 
-    int tmpOverlapCnt;
+    int tmpOverlapCnt = 0;
     for(int i = 0; i <= 2*n; ++i){
         int curX, curV;
         tie(curX, curV) = points[i];
 
-        tmpOverlapCnt = 0;
-        for(int j = 0; j < 2*n; ++j){
-            int x, v;
-            tie(x, v) = points[j];
-            if(x > curX)
-                break;
-            
-            tmpOverlapCnt += v;
-        }
+        tmpOverlapCnt += curV;
+        
         //debug
-        //printf("%d::%d\n", i, tmpOverlapCnt);
+        // printf("%d::%d\n", i, tmpOverlapCnt);
         if(maxOverlapCnt < tmpOverlapCnt)
             maxOverlapCnt = tmpOverlapCnt;
     }
