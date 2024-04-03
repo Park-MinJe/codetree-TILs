@@ -5,41 +5,38 @@
 using namespace std;
 
 int n,
-    movingCost[MAX_N],
-    chargingCost[MAX_N];
-long long
-    movingCostToEnd[MAX_N],
-    minChargingCostToEnd[MAX_N];
+    dist[MAX_N],
+    cost[MAX_N],
+    min_cost[MAX_N];
+long long ans = 0;
 
 void init(){
     cin>>n;
-    for(int i = 0; i < n-1; ++i){
-        cin>>movingCost[i];     // i에서 이동하는 데 드는 비용
+    for(int i = 2; i <= n; ++i){
+        cin>>dist[i];     // i에서 이동하는 데 드는 비용
     }
-    for(int i = n-2; i >= 0; --i){
-        movingCostToEnd[i] = (long long) movingCost[i] + movingCostToEnd[i+1];
-        //debug
-        // printf("%d::%lld\n", i, movingCostToEnd[i]);
-    }
-    for(int i = 0; i < n; ++i){
-        cin>>chargingCost[i];     // i에서 에너지 1 충전에 드는 비용
+    for(int i = 1; i <= n; ++i){
+        cin>>cost[i];     // i에서 에너지 1 충전에 드는 비용
     }
 }
 
 void solve(){
-    minChargingCostToEnd[n-2] = movingCost[n-2] * chargingCost[n-2];
-    for(int i = n-3; i >= 0; --i){
-        minChargingCostToEnd[i] = 
-            min(
-                minChargingCostToEnd[i+1] + movingCost[i] * chargingCost[i],
-                movingCostToEnd[i] * chargingCost[i]
-            );
+    min_cost[2] = cost[1];
+    for(int i = 3; i <= n; ++i){
+        min_cost[i] = min(
+            min_cost[i-1],
+            cost[i-1]
+        );
+    }
+
+    for(int i = 1; i <=n; ++i){
+        ans += (long long)min_cost[i] * dist[i];
     }
 }
 
 int main() {
     init();
     solve();
-    cout<<minChargingCostToEnd[0];
+    cout<<ans;
     return 0;
 }
