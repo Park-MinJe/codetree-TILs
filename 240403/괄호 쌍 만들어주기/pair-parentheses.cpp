@@ -7,7 +7,8 @@ using namespace std;
 
 string str;
 int open = 0,
-    close = 0,
+    close = 0;
+long long 
     R[MAX_LEN],
     ans = 0;
 
