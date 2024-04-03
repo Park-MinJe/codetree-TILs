@@ -13,6 +13,15 @@ vector<tuple<unsigned int, int , int>> days;    // <day, v, idx>
 unordered_map<int, int> reservation;      // <idx, room number>
 priority_queue<int> rooms;
 
+bool compare(tuple<unsigned int, int , int>& t1, tuple<unsigned int, int , int>& t2){
+    unsigned int day1, day2;
+    int v1, v2, idx1, idx2;
+    tie(day1, v1, idx1) = t1;
+    tie(day2, v2, idx2) = t2;
+
+    return day1 < day2 || (day1 == day2 && v1 > v2);
+}
+
 void init(){
     cin>>n;
     for(int i = 0; i < n; ++i){
@@ -24,7 +33,7 @@ void init(){
             make_tuple(e, -1, i)
         );
     }
-    sort(days.begin(), days.end());
+    sort(days.begin(), days.end(), compare);
 }
 
 void solve(){
@@ -48,6 +57,9 @@ void solve(){
             );
             reservation.erase(idx);
         }
+
+        // debug
+        // printf("%u %d %d::%d\n", day, v, idx, roomCnt);
     }
 }
 
