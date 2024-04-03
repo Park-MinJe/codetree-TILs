@@ -30,7 +30,7 @@ void init(){
     }
     sort(points.begin(), points.end());
 
-    // 기존 영역의 총 길이
+    // 기존 영역의 총 길이-> 틀림. solv3에서 재정의
     // long long startX = 0;
     // for(int i = 0; i < n*2; ++i){
     //     long long x;
