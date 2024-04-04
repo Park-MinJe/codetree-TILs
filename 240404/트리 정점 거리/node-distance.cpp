@@ -13,9 +13,9 @@ int n, m,
 
 bool isVisited[MAX_NM];
 
-vector<pair<int, int>> vertexes[MAX_NM];  // <node, w>
-// vector<pair<int, int>> toParent[MAX_NM];  // <parent, w>
-// vector<pair<int, int>> toChild[MAX_NM];  // <child, w>
+// vector<pair<int, int>> vertexes[MAX_NM];  // <node, w>
+vector<pair<int, int>> toParent[MAX_NM];  // <parent, w>
+vector<pair<int, int>> toChild[MAX_NM];  // <child, w>
 vector<pair<int, int>> trgts;   // <s, e>
 vector<int> results;
 
@@ -24,19 +24,19 @@ void init(){
     for(int i = 0; i < n-1; ++i){
         cin>>c>>p>>w;
 
-        vertexes[p].push_back(
-            make_pair(c, w)
-        );
-        vertexes[c].push_back(
-            make_pair(p, w)
-        );
-
-        // toChild[p].push_back(
+        // vertexes[p].push_back(
         //     make_pair(c, w)
         // );
-        // toParent[c].push_back(
+        // vertexes[c].push_back(
         //     make_pair(p, w)
         // );
+
+        toChild[p].push_back(
+            make_pair(c, w)
+        );
+        toParent[c].push_back(
+            make_pair(p, w)
+        );
     }
 
     for(int i = 0; i < m; ++i){
@@ -58,37 +58,37 @@ void dfs(int trgt, int cur, int dist){
             return;
         }
 
-        vector<pair<int, int>>::iterator itVertex;
-        for(itVertex = vertexes[cur].begin(); itVertex != vertexes[cur].end(); ++itVertex){
-            if(!isVisited[itVertex->first]){
+        // vector<pair<int, int>>::iterator itVertex;
+        // for(itVertex = vertexes[cur].begin(); itVertex != vertexes[cur].end(); ++itVertex){
+        //     if(!isVisited[itVertex->first]){
+        //         dfs(
+        //             trgt,
+        //             itVertex->first,
+        //             dist + itVertex->second
+        //         );
+        //     }
+        // }
+
+        vector<pair<int, int>>::iterator itChild;
+        for(itChild = toChild[cur].begin(); itChild != toChild[cur].end(); ++itChild){
+            if(!isVisited[itChild->first]){
                 dfs(
                     trgt,
-                    itVertex->first,
-                    dist + itVertex->second
+                    itChild->first,
+                    dist + itChild->second
                 );
             }
         }
-
-        // vector<pair<int, int>>::iterator itChild;
-        // for(itChild = toChild[cur].begin(); itChild != toChild[cur].end(); ++itChild){
-        //     if(!isVisited[itChild->first]){
-        //         dfs(
-        //             trgt,
-        //             itChild->first,
-        //             dist + itChild->second
-        //         );
-        //     }
-        // }
-        // vector<pair<int, int>>::iterator itParent;
-        // for(itParent = toParent[cur].begin(); itParent != toParent[cur].end(); ++itParent){
-        //     if(!isVisited[itParent->first]){
-        //         dfs(
-        //             trgt,
-        //             itParent->first,
-        //             dist + itParent->second
-        //         );
-        //     }
-        // }
+        vector<pair<int, int>>::iterator itParent;
+        for(itParent = toParent[cur].begin(); itParent != toParent[cur].end(); ++itParent){
+            if(!isVisited[itParent->first]){
+                dfs(
+                    trgt,
+                    itParent->first,
+                    dist + itParent->second
+                );
+            }
+        }
     }
 }
 
