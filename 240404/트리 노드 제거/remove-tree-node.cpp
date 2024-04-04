@@ -54,12 +54,27 @@ void dfs(){
         }
     }
 }
+void dfs_recursive(int curNode){
+    if(tree[curNode].empty()
+        || (tree[curNode].size() == 1 && tree[curNode][0] == trgt)){
+        ++cnt;  // 리프 노드 추가
+    }
+
+    vector<int>::iterator child;
+    for(child = tree[curNode].begin(); child != tree[curNode].end(); ++child){
+        if(*child != trgt && !isVisited[*child]){ // 지운 노드가 아닌 경우
+            isVisited[*child] = true;
+            dfs_recursive(*child);
+        }
+    }
+}
 
 void solve(){
     if(root == trgt){
         return;
     }
-    dfs();
+    // dfs();
+    dfs_recursive(root);
 }
 
 int main() {
