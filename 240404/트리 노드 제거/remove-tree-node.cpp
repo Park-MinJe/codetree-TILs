@@ -40,7 +40,8 @@ void dfs(){
         // debug
         // cout<<cur<<"\n";
 
-        if(tree[cur].empty()){
+        if(tree[cur].empty()
+        || (tree[cur].size() == 1 && tree[cur][0] == trgt)){
             ++cnt;  // 리프 노드 추가
         }
 
