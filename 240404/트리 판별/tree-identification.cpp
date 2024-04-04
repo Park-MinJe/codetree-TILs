@@ -38,11 +38,13 @@ void init(){
 }
 
 void dfs(int curNode){
-    isVisited[curNode] = true;
+    if(!isVisited[curNode]){
+        isVisited[curNode] = true;
 
-    vector<int>::iterator it;
-    for(it = vertex[curNode].begin(); it != vertex[curNode].end(); ++it){
-        dfs(*it);
+        vector<int>::iterator it;
+        for(it = vertex[curNode].begin(); it != vertex[curNode].end(); ++it){
+            dfs(*it);
+        }
     }
 }
 
