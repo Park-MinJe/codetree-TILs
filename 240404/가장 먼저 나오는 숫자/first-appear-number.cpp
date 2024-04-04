@@ -42,7 +42,7 @@ void solve(){
     for(int i = 0; i < m; ++i){
         if(nums.find(trgts[i]) == nums.end()){
             cout<<"-1\n";
-            break;
+            continue;
         }
         cout << getLowerBound(trgts[i]) + 1 << "\n";
     }
