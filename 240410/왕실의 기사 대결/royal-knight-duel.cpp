@@ -62,7 +62,8 @@ queue<Op*> qOpList;             // 명령어 목록 큐. 포인터 초기화 필
 /***************************************************************************/
 void init();                    // 입력 처리 및 변수 초기화
 
-bool inRange(int nr, int nc);   // 이동할 좌표가 map 내인가
+bool inRange(int nr, int nc, int curH, int curW);
+                                // 이동할 좌표가 map 내인가
 bool isWall(int nr, int nc, int curH, int curW);
                                 // 이동할 좌표가 벽인가
 vector<int> isOther(int nr, int nc, int curKIdx, int curH, int curW);
@@ -133,8 +134,17 @@ void init(){                    // 입력 처리 및 변수 초기화
     // cout<<"---init 종료\n";
 }
 
-bool inRange(int nr, int nc){                       // 이동할 좌표가 map 내인가
-    return 1<=nr&&nr<=L && 1<=nc&&nc<=L;
+bool inRange(int nr, int nc, int curH, int curW){   // 이동할 좌표가 map 내인가
+    int upperR = nr + curH,
+        upperC = nc + curW;
+    for(int i = nr; i < upperR; ++i){
+        for(int j = nc; j < upperC; ++j){
+            if(!(1<=i&&i<=L && 1<=j&&j<=L)){
+                return false;
+            }
+        }
+    }
+    return true;
 }
 bool isWall(int nr, int nc, int curH, int curW){    // 이동할 좌표가 포함된 영역에 벽이 있는가
     int upperR = nr+curH,
@@ -244,7 +254,7 @@ bool Knight::move(int opDir){            // 이동
     // debug
     // printf("기사%d %d 방향 이동 가능 여부 판단 시작::(%d, %d)->(%d, %d)\n", this->idx, opDir, this->r, this->c, nr, nc);
     
-    if(!inRange(nr, nc) || isWall(nr, nc, this->h, this->w)){
+    if(!inRange(nr, nc, this->h, this->w) || isWall(nr, nc, this->h, this->w)){
         // debug
         // cout<<this->idx<<"가 지도 밖이거나 벽이 포함되어 종료\n";
 
