@@ -1,5 +1,6 @@
 #include <iostream>
 #include <unordered_map>
+#include <unordered_set>
 #include <tuple>
 #include <queue>
 #include <vector>
@@ -66,7 +67,7 @@ bool inRange(int nr, int nc, int curH, int curW);
                                 // 이동할 좌표가 map 내인가
 bool isWall(int nr, int nc, int curH, int curW);
                                 // 이동할 좌표가 벽인가
-vector<int> isOther(int nr, int nc, int curKIdx, int curH, int curW);
+unordered_set<int> isOther(int nr, int nc, int curKIdx, int curH, int curW);
                                 // 이동할 좌표가 포함된 영역에 curKIdx 이외의 기사가 있는가
                                 // 있다면 해당 기사들의 idx 반환
                                 // 없다면 기사의 번호가 될 수 없는 0 반환
@@ -132,6 +133,12 @@ void init(){                    // 입력 처리 및 변수 초기화
 
     //debug
     // cout<<"---init 종료\n";
+    // for(int i = 1; i <= L; ++i){
+    //     for(int j = 1; j <= L; ++j){
+    //         cout<<mapForKnightIdx[i][j]<<" ";
+    //     }
+    //     cout<<"\n";
+    // }
 }
 
 bool inRange(int nr, int nc, int curH, int curW){   // 이동할 좌표가 map 내인가
@@ -161,15 +168,16 @@ bool isWall(int nr, int nc, int curH, int curW){    // 이동할 좌표가 포�
     }
     return false;
 }
-vector<int> isOther(int nr, int nc, int curKIdx, int curH, int curW){
+unordered_set<int> isOther(int nr, int nc, int curKIdx, int curH, int curW){
                                                     // 이동할 좌표가 포함된 영역에 다른 기사가 있는가
-    vector<int> rt;
+    unordered_set<int> rt;
 
     for(int i = nr; i < nr+curH; ++i){
         for(int j = nc; j < nc+curW; ++j){
-            if(mapForKnightIdx[i][j] != 0 && mapForKnightIdx[i][j] != curKIdx){
+            if(mapForKnightIdx[i][j] != 0 && mapForKnightIdx[i][j] != curKIdx
+            && rt.find(mapForKnightIdx[i][j]) == rt.end()){
                 // 이동하려는 영역에 기사가 이미 있고, 다른 기사인 경우
-                rt.push_back(mapForKnightIdx[i][j]);
+                rt.insert(mapForKnightIdx[i][j]);
             }
         }
     }
@@ -266,8 +274,8 @@ bool Knight::move(int opDir){            // 이동
         return false;
     }
 
-    vector<int> possibleKnights = isOther(nr, nc, this->idx, this->h, this->w);
-    vector<int>::iterator possibleIt;
+    unordered_set<int> possibleKnights = isOther(nr, nc, this->idx, this->h, this->w);
+    unordered_set<int>::iterator possibleIt;
     for(possibleIt = possibleKnights.begin(); possibleIt != possibleKnights.end(); ++possibleIt){
         // debug
         // cout<<this->idx<<"이동하는 길에 다른 기사"<<*possibleIt<<" 존재\n";
@@ -276,7 +284,6 @@ bool Knight::move(int opDir){            // 이동
         Knight*& nextK = mapKnightsInfo[
             *possibleIt
         ];
-        // if(!mapKnightIsMoved[nextK->idx]){  // 이번 턴에 첫 방문인 기사의 경우
         if(!nextK->move(opDir)){
             // debug
             // cout<<this->idx<<"가 민 "<<nextK->idx<<"가 움직일 수 없음\n";
@@ -291,19 +298,28 @@ bool Knight::move(int opDir){            // 이동
             // 밀림
             nextK->damage();
         }
-        // }
     }
 
     // 이동 가능
     for(int i = 0; i < h; ++i){
         for(int j = 0; j < w; ++j){
             mapForKnightIdx[r+i][c+j] = 0;              // 원래 위치 초기화
+        }
+    }
+    for(int i = 0; i < h; ++i){
+        for(int j = 0; j < w; ++j){
             mapForKnightIdx[nr+i][nc+j] = this->idx;    // 이동할 위치에 표시
         }
     }
 
     // debug
     // printf("- 기사%d 좌표 이동::(%d, %d) -> (%d, %d)\n", this->idx, r, c, nr, nc);
+    // for(int i = 1; i <= L; ++i){
+    //     for(int j = 1; j <= L; ++j){
+    //         cout<<mapForKnightIdx[i][j]<<" ";
+    //     }
+    //     cout<<"\n";
+    // }
 
     // 좌표 갱신
     r = nr; c = nc;
