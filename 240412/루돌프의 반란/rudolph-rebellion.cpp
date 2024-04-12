@@ -195,6 +195,9 @@ void simulate() {
                     curSanta->move();
 
                 // debug
+                // else {
+                //     cout << "산타" << curSanta->idx << "기절 상태 남은 턴 수 = " << curSanta->isSturned << "\n";
+                // }
                 // cout << "AFTER::산타" << curSanta->idx << "::(" << curSanta->r << ", " << curSanta->c << ")\n";
             }
         }
@@ -243,15 +246,22 @@ void simulate() {
 }
 
 void printScore() {
-    // debug
-    // cout << "산타 수 = " << santaMap.size() << "\n";
+    int tmpCntAlive = 0;
 
     map<int, Santa*>::iterator it;
     for (it = santaMap.begin(); it != santaMap.end(); ++it) {
     //for (int i = 0; i < P; ++i) {
         //cout << santaMap[lstSantaNum[i]]->score << " ";
         cout << it->second->score << " ";
+
+        // debug
+        // if (!(it->second->isDead)) {
+        //     ++tmpCntAlive;
+        // }
     }
+
+    // debug
+    // cout << "\n생존 산타 수 = " << tmpCntAlive << "\n";
 }
 
 /***** class Obj *****/
@@ -261,6 +271,9 @@ long long Obj::getDist(int nr, int nc) {
 
 /***** class Santa *****/
 void Santa::serialReaction(int by, int dirIdx) { // by::0->루돌프 / 1->산타
+    // debug
+    // cout << "by " << by << ", dirIdx = " << dirIdx << "\n";
+
     int originSantaNum = mapSantaNum[r][c];
     Santa*& originSanta = santaMap[originSantaNum]; // 충돌할 기존 산타
 
@@ -412,7 +425,13 @@ void Roodolph::collapse() {    // 산타와 충돌
         curTrgt->score += C;
         curTrgt->r += roodolphDr[dirIdx] * C;
         curTrgt->c += roodolphDc[dirIdx] * C;
-        curTrgt->isSturned += 2;
+        if (curTrgt->isSturned != 0) {
+            ++(curTrgt->isSturned);
+        }
+        else {
+            curTrgt->isSturned += 2;
+        }
+        
         //debug
         // cout<<"Line 355::산타"<<curTrgt->idx<<" 기절 +1 -> "<<curTrgt->isSturned<<"\n";
 
