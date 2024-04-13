@@ -5,6 +5,7 @@
 #include <climits>
 #include <deque>
 #include <unordered_map>
+#include <queue>
 
 #define MAX_NM 10
 #define MAX_K 1000
@@ -52,7 +53,8 @@ bool compareTowerPowerWithVector(pair<int, Tower*>& p1, pair<int, Tower*>& p2);
 
 bool inRange(int r, int c);
 int searchRoute(int minLen, int curLen, int curR, int curC);    // 공격 대상까지 최단 거리 계산
-void lazer(int minRouteCnt);        // 레이저로 인한 피해 계산
+bool searchRouteBfs();
+void lazer();        // 레이저로 인한 피해 계산
 void bombExplose();                 // 폭탄이 터지는 경우
 
 int main() {
@@ -97,6 +99,9 @@ void init() {
 }
 void simulate() {
     for (int i = 0; i < K; ++i) {
+        // debug
+        // cout << "\n" << (i + 1) << "번째 턴\n";
+
         // 1. 공격자 선정
         vector<pair<int, Tower*>> vecToSort(lstWorkingTower.begin(), lstWorkingTower.end());
         //sort(vecToSort.begin(), vecToSort.end(), compareTowerPower);
@@ -126,14 +131,16 @@ void simulate() {
 
         // 2-1. 레이저 공격
         // 최단 경로 탐색
-        isVisited[curAttacker->r][curAttacker->c] = true;
-        int tmpMinLen = searchRoute(INT_MAX, 0, curAttacker->r, curAttacker->c);
+        //isVisited[curAttacker->r][curAttacker->c] = true;
+        //int tmpMinLen = searchRoute(INT_MAX, 0, curAttacker->r, curAttacker->c);
+        bool hasRoute = searchRouteBfs();
         // debug
-        // cout << "tmpMinLen = " << tmpMinLen << "\n";
+        //cout << "tmpMinLen = " << tmpMinLen << "\n";
 
-        if (tmpMinLen != INT_MAX) {
+        //if (tmpMinLen != INT_MAX) {
+        if (hasRoute) {
             // 경로를 찾은 경우
-            lazer(tmpMinLen);
+            lazer();
         }
         // 2-2. 포탄 공격
         else {
@@ -253,6 +260,10 @@ int searchRoute(int minLen, int curLen, int curR, int curC) {
                 minLen = newLen;
             }
             isVisited[nr][nc] = false;
+
+            if (nr == curTarget->r && nc == curTarget->c) {
+                break;
+            }
         }
     }
 
@@ -260,8 +271,53 @@ int searchRoute(int minLen, int curLen, int curR, int curC) {
     //cout << "(" << curR << ", " << curC << ")::curRoute.size() = " << curRoute.size() << "\n";
     return minLen;
 }
+bool searchRouteBfs() {
+    queue<Tower*> q;
+    q.push(curAttacker);
+    isVisited[curAttacker->r][curAttacker->c] = true;
 
-void lazer(int minRouteCnt) {
+    while (!q.empty()) {
+        Tower* cur = q.front();
+        q.pop();
+        // debug
+        // cout << "cur::(" << cur->r << ", " << cur->c << ")\n";
+
+        for (int i = 0; i < 4; ++i) {
+            int nr = cur->r + lazerDr[i],
+                nc = cur->c + lazerDc[i];
+            // debug
+            // cout << "\t(" << cur->r << ", " << cur->c << ")->(" << nr << ", " << nc << ")\n";
+            if (!inRange(nr, nc)) {
+                // 경계 밖인 경우
+                if (nr < 1) nr = N;
+                else if (nr > N) nr = 1;
+
+                if (nc < 1)nc = M;
+                else if (nc > M)nc = 1;
+            }
+
+            if (!isVisited[nr][nc] && map[nr][nc] > 0) {
+                q.push(lstWorkingTower[
+                    mapTowerIdx[nr][nc]
+                ]);
+                isVisited[nr][nc] = true;
+                mapShortCut[nr][nc] = make_pair(
+                    cur->r, cur->c
+                );
+                // debug
+                // cout << "\t\tmapShortCut[" << nr << "][" << nc << "] = (" << mapShortCut[nr][nc].first << ", " << mapShortCut[nr][nc].second << ")\n";
+
+                if (nr == curTarget->r && nc == curTarget->c) {
+                    return true;
+                }
+            }
+        }
+    }
+
+    return false;
+}
+
+void lazer() {
     int tmpR = curTarget->r,
         tmpC = curTarget->c;
     // 공격 대상 피해
@@ -285,17 +341,17 @@ void lazer(int minRouteCnt) {
             mapTowerIdx[tmpR][tmpC]
         ];
         // debug
-        // cout << "Lazer Route::Before::Tower" << mapTowerIdx[tmpR][tmpC] << "->(" << curAttacted->r << ", " << curAttacted->c << "), power = " << curAttacted->power << "\n";
-        // cout << "Lazer Route::" << curAttacted->power << "-" << curAttackPowerHalf << " = ";
+        //cout << "Lazer Route::Before::Tower" << mapTowerIdx[tmpR][tmpC] << "->(" << curAttacted->r << ", " << curAttacted->c << "), power = " << curAttacted->power << "\n";
+        //cout << "Lazer Route::" << curAttacted->power << "-" << curAttackPowerHalf << " = ";
         curAttacted->power -= curAttackPowerHalf;
         map[tmpR][tmpC] = curAttacted->power;
         isRelated[curAttacted->r][curAttacted->c] = true;   // 공격과 연관됨. 포탑 정비 대상 제외
 
         // debug
-        // cout << curAttacted->power << "\n";
+        //cout << curAttacted->power << "\n";
 
         // debug
-        // cout << "Lazer Route::After::Tower" << mapTowerIdx[tmpR][tmpC] << "->(" << curAttacted->r << ", " << curAttacted->c << "), power = " << curAttacted->power << "\n";
+        //cout << "Lazer Route::After::Tower" << mapTowerIdx[tmpR][tmpC] << "->(" << curAttacted->r << ", " << curAttacted->c << "), power = " << curAttacted->power << "\n";
         // 3. 포탑 부서짐
         if (curAttacted->power <= 0) {
             lstWorkingTower.erase(
