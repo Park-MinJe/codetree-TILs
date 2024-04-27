@@ -13,18 +13,13 @@ public:
 };
 
 int N,
-    arr[MAX_N],
-    sum[MAX_N];
+    arr[MAX_N];
 double answer = -1.0;
 
 void init(){
     cin>>N;
     for(int i = 0; i < N; ++i){
         cin>>arr[i];
-
-        for(int j = 0; j <= i; ++j){
-            sum[j] += arr[i];
-        }
     }
 
     // debug
@@ -34,16 +29,18 @@ void init(){
 }
 
 void solve(){
+    int sum = arr[N-1];
     priority_queue<int, vector<int>, cmp> pq(arr+N-1, arr+N);
     for(int K = N-2; K >= 1; --K){
         pq.push(arr[K]);
+        sum += arr[K];
 
         // debug
         // cout<<K<<"::"<<pq.top()<<"\n";
         // cout<<(sum[K] - pq.top())<<"\n";
         // cout<<N-K<<"\n";
 
-        double tmpAvg = (sum[K] - pq.top()) / (double)(N - K - 1);
+        double tmpAvg = (sum - pq.top()) / (double)(N - K - 1);
 
         answer = max(answer, tmpAvg);
     }
